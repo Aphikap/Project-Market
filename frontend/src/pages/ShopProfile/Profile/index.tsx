@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ShopProfile.css';
-import { Link } from "react-router-dom";
-import { EditOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from "react-router-dom";
+import { EditOutlined, AppstoreOutlined,DeleteOutlined } from '@ant-design/icons';
 import { getMyPostProducts, ListMyProfile } from '../../../api/auth';
 import useEcomStore from '../../../store/ecom-store';
 
@@ -23,6 +23,8 @@ const ShopProfile: React.FC = () => {
             item?.Product?.ProductImage?.map((img: any) => `http://localhost:8080${img?.image_path}`)?.filter(Boolean) || [];
 
           return {
+            postId: item?.ID,              // ✅ ไอดีของโพสต์ (Post_a_New_Product.ID)
+            productId: item?.Product?.ID,  // (ถ้าจะใช้ถึงค่อยหยิบ)
             id: item?.Product?.ID,
             name: item?.Product?.name,
             category: item?.Category?.name || "ไม่ระบุ",
@@ -76,10 +78,12 @@ const ShopProfile: React.FC = () => {
           <p className="shop-slogan">{slogan}</p>
         </div>
         <div className="icon-btn">
-         
+
           <Link to="/user/profile/edit" aria-label="แก้ไขโปรไฟล์">
             <EditOutlined />
           </Link>
+            <DeleteOutlined />
+
 
         </div>
       </div>
@@ -130,6 +134,7 @@ const ShopProfile: React.FC = () => {
         ) : (
           <div className="product-list grid-wrap">
             {products.map((product) => (
+
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -143,11 +148,21 @@ const ShopProfile: React.FC = () => {
 const ProductCard: React.FC<{ product: any }> = ({ product }) => {
   const imgs: string[] = Array.isArray(product.images) ? product.images : [];
   const [active, setActive] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <div className="product-card">
       <div className="product-edit-btn">
-        <EditOutlined />
+        <button
+          onClick={() =>
+            navigate(`/user/products/${product.postId}/edit`)
+          }
+        >
+
+          <EditOutlined />
+          <DeleteOutlined />
+          
+        </button>
       </div>
 
       {/* รูปหลัก: แสดงก็ต่อเมื่อมีอย่างน้อย 1 รูป */}

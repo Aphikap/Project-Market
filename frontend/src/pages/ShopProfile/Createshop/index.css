@@ -13,12 +13,7 @@
 }
 
 /* พื้นหลังหน้านี้ให้มีมิติหน่อย */
-body {
-  background:
-    radial-gradient(900px 500px at 10% -10%, #ffe1d6 0%, transparent 60%),
-    radial-gradient(900px 500px at 95% 0%, #fff0e9 0%, transparent 65%),
-    var(--bg);
-}
+
 
 /* ระยะเผื่อโลโก้มุมซ้าย */
 .container {

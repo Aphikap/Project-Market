@@ -9,6 +9,9 @@ import RegisterForm from "../authentication/Register";
 import LoginForm from "../authentication/Login";
 import ProtectRouteUser from "./ProtectRouteUser";
 import EditShopProfile from "../ShopProfile/EditShopProfile/EditShopProfile";
+import AdminLayout from "../admin/Admin";
+import Category from "../../component/admin/Category";
+import CategoryShop from "../../component/admin/CategoryShop";
 
 
 
@@ -19,9 +22,21 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Productlist /> },
       { path: "login", element: <LoginForm /> },
+      { path: "Admin", element: <AdminLayout /> },
 
       { path: "register", element: <RegisterForm /> },
       { path: "*", element: <Navigate to="/" replace /> },
+    ],
+  },
+
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <Category /> },
+      { path: "category", element: <Category /> },
+      { path: "shopcategory", element: <CategoryShop /> },
+
     ],
   },
   {
@@ -31,8 +46,9 @@ const router = createBrowserRouter([
       { index: true, element: <Productlist /> },
       { path: "create-post", element: <PostProduct /> },
       { path: "create-profile", element: <Shopprofile /> },
-      {path: "profile",element:<Profile/>},
-      {path: "profile/edit",element:<EditShopProfile/>},
+      { path: "/user/products/:postId/edit", element: <PostProduct /> },
+      { path: "profile", element: <Profile /> },
+      { path: "profile/edit", element: <EditShopProfile /> },
       { path: "*", element: <Navigate to="/user" replace /> },
     ],
   },

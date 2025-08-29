@@ -40,10 +40,11 @@ func SetupRouter() *gin.Engine {
 		api.GET("/listAllProducts",controller.ListAllProducts)
 		api.GET("/ListMyPostProducts",middleware.AuthGuard(),controller.ListMyPostProducts)
 		api.GET("/ListMyProfile",middleware.AuthGuard(),controller.ListMyProfile)
-		
+		api.GET("/post-products/:id",middleware.AuthGuard(), controller.GetPostProductByID)
 
 		//update
 		api.PUT("/UpdateShopProfile",middleware.AuthGuard(),controller.UpdateShopProfile)
+		api.PUT("/UpdateProduct",middleware.AuthGuard(),controller.UpdateProduct)
 
 
 
@@ -51,6 +52,10 @@ func SetupRouter() *gin.Engine {
 		api.POST("/register", controller.RegisterSeller)
 		api.POST("/login", controller.LoginSeller)
 		api.GET("/current-user", middleware.AuthGuard(), controller.CurrentSeller)
+
+		//Aadmin
+		api.POST("/CreateCategory", controller.CreateCategory)
+		api.GET("/listCategory", controller.ListCategoies)
 
 	}
 

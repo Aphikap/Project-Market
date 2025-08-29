@@ -1,69 +1,127 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+/* ===== รีเซ็ต ===== */
+html, body, #root {
   margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* ===== คอนเทนต์อยู่ชั้นบน ===== */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== พื้นหลังไฟแบบส้ม ๆ ===== */
+.bg-fire {
+  position: fixed;
+  inset: 0;
+  z-index: -1; 
+  pointer-events: none;
+  overflow: hidden;
+
+  /* โทนส้มชั้นฐาน */
+  background:
+    radial-gradient(900px 450px at 15% 10%,  #ffedd6 0%, transparent 60%),
+    radial-gradient(900px 450px at 85% 20%,  #ffd7b3 0%, transparent 62%),
+    radial-gradient(700px 400px at 35% 85%,  #ffb19933 0%, transparent 65%),
+    linear-gradient(160deg, #2a0b00 0%, #4b1300 28%, #7a1e00 55%, #a32a00 78%, #ff4d00 100%);
+  filter: saturate(1.15) contrast(1.02);
+}
+
+/* custom property สำหรับหมุน */
+@property --a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ก้อนแสงเคลื่อนไหว */
+.bg-fire::before {
+  content: "";
+  position: absolute; inset: -20%;
+  mix-blend-mode: screen;
+  filter: blur(18px) saturate(1.08);
+
+  --a: 0deg;
+  background:
+    radial-gradient(45% 40% at 20% 30%, rgba(255,150,80,.22), transparent 60%),
+    radial-gradient(40% 50% at 80% 25%, rgba(255,110,50,.18), transparent 65%),
+    radial-gradient(60% 50% at 60% 85%, rgba(255,80,20,.14), transparent 70%),
+    conic-gradient(from var(--a),
+      rgba(255,190,120,.18),
+      rgba(255,120,60,.04),
+      rgba(255,190,120,.18));
+  animation:
+    fireSpin 80s linear infinite,
+    fireFloat 22s ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+@keyframes fireSpin {
+  to { --a: 360deg; }
+}
+@keyframes fireFloat {
+  from { transform: translateY(-2%) rotate(-2deg); }
+  to   { transform: translateY( 2%) rotate( 2deg); }
+}
+
+/* ประกายไฟ */
+.bg-fire::after {
+  content: "";
+  position: absolute; inset: 0;
+  mix-blend-mode: screen;
+  opacity: .35;
+
+  background-image:
+    radial-gradient(rgba(255,210,120,.20) 1px, transparent 1.6px),
+    radial-gradient(rgba(255,130,60,.12) 1px, transparent 1.8px);
+  background-size: 3px 3px, 6px 6px;
+  background-position: 0 0, 0 0;
+
+  animation:
+    glowPulse 6s ease-in-out infinite alternate,
+    sparkDrift 18s linear infinite;
+  will-change: background-position, opacity;
+}
+
+@keyframes glowPulse {
+  from { opacity: .26; }
+  to   { opacity: .42; }
+}
+@keyframes sparkDrift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 160px -120px, -120px 90px; }
+}
+
+/* ===== Header ===== */
+.background-header {
+  --header-height: 40px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+
+  height: var(--header-height);
   display: flex;
-  
-  min-width: 320px;
-  min-height: 100vh;
-  overflow-x: auto;
+  align-items: center;
+
+  background: #f79a0c;
+  color: #fff;
+  margin: 0;
+  padding: 0 12px;
+
+  /* เพิ่มเงาให้ header ดูลอย */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* เว้นที่ให้คอนเทนต์ */
+.page-wrap {
+  padding-top: var(--header-height);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+/* Responsive: ปรับไฟให้อ่อนลงบนจอเล็ก */
+@media (max-width: 600px) {
+  .bg-fire {
+    filter: saturate(1.05) contrast(1.0);
   }
 }
